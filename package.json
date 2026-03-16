@@ -4,12 +4,13 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview"
+    "dev": "parcel index.html",
+    "build": "parcel build index.html",
+    "preview": "npx serve dist"
   },
   "devDependencies": {
-    "sass-embedded": "^1.98.0",
-    "vite": "^8.0.0"
+    "@parcel/transformer-inline-string": "^2.16.4",
+    "@parcel/transformer-sass": "^2.13.0",
+    "parcel": "^2.13.0"
   }
 }
