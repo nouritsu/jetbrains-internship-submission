@@ -1,0 +1,107 @@
+@use "sass:math";
+@use "sass:color";
+@use "sass:list";
+
+// catppuccin mocha
+$base: #1e1e2e;
+$mantle: #181825;
+$crust: #11111b;
+$surface0: #313244;
+$surface1: #45475a;
+$surface2: #585b70;
+$overlay0: #6c7086;
+$text: #cdd6f4;
+$subtext0: #a6adc8;
+$subtext1: #bac2de;
+$lavender: #b4befe;
+$blue: #89b4fa;
+$sapphire: #74c7ec;
+$green: #a6e3a1;
+$peach: #fab387;
+$red: #f38ba8;
+$mauve: #cba6f7;
+$pink: #f5c2e7;
+$yellow: #f9e2af;
+
+$font: "JetBrains Mono", monospace;
+
+@mixin theme {
+  background: $base;
+  color: $text;
+  font-family: $font;
+}
+
+@mixin bracketed-link($color: $blue, $open: "[", $close: "]", $hover-open: "(", $hover-close: ")") {
+  color: $color;
+  text-decoration: none;
+  display: inline-block;
+  transition: transform 0.15s ease, color 0.15s ease;
+
+  &::before {
+    content: $open;
+    color: $overlay0;
+    display: inline-block;
+  }
+
+  &::after {
+    content: $close;
+    color: $overlay0;
+    display: inline-block;
+  }
+
+  &:hover {
+    transform: scale(1.1);
+    text-decoration: underline;
+
+    &::before {
+      content: $hover-open;
+      color: $mauve;
+    }
+
+    &::after {
+      content: $hover-close;
+      color: $mauve;
+    }
+  }
+}
+
+$link-colors: $pink, $mauve, $blue, $green, $yellow, $peach, $red;
+
+@mixin rainbow-gradient-text($direction: to bottom right, $steps: 12) {
+  $n: list.length($link-colors);
+  $stops: ();
+
+  @for $seg from 1 through $n - 1 {
+    $c1: list.nth($link-colors, $seg);
+    $c2: list.nth($link-colors, $seg + 1);
+
+    @for $step from 0 through $steps - 1 {
+      $t: math.div($step, $steps);
+      $t-eased: $t * $t * (3 - 2 * $t); // smoothstep
+      $mixed: color.mix($c2, $c1, $t-eased * 100%);
+      $pos: math.percentage(math.div(($seg - 1) * $steps + $step, ($n - 1) * $steps));
+      $stops: list.append($stops, $mixed $pos, comma);
+    }
+  }
+
+  $stops: list.append($stops, list.nth($link-colors, $n) 100%, comma);
+
+  background: linear-gradient($direction, $stops);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+@mixin rainbow-links {
+  @for $i from 1 through list.length($link-colors) {
+    $color: list.nth($link-colors, $i);
+    &:nth-child(#{$i}) {
+      @include bracketed-link($color: $color);
+
+      &:hover::before,
+      &:hover::after {
+        color: $color;
+      }
+    }
+  }
+}
