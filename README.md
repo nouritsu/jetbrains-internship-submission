@@ -10,6 +10,7 @@ This repository is my solution the task described by: https://internship.jetbrai
 ### Demo
 The website is deployed at: https://hire-me.nouritsu.com
 It will remain accessible for at least 1 month starting `2026-03-16`.
+NOTE: the website is not styled for mobile (like at all) but for the usecase, this will suffice.
 
 ### Build
 First, clone this repository (or download it manually)
